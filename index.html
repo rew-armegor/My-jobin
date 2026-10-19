@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЛЕНДИНГИ | Сайт под ключ — @mar_meladkas</title>
+    
+    <!-- Google Fonts: Unbounded (Modern brutalist/grotesque), Cinzel (Classic antique serif for Latin/Greek), Inter (Technical clean) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&family=Unbounded:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #030303;
+            --text-color: #f5f5f7;
+            --text-dim: #929298;
+            --accent-glow: rgba(255, 255, 255, 0.08);
+            --tg-blue: #2AABEE;
+            --tg-glow: rgba(42, 171, 238, 0.35);
+            --font-display: 'Unbounded', sans-serif;
+            --font-quote: 'Cinzel', serif;
+            --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-ui);
+            overflow: hidden;
+            position: relative;
+            user-select: none;
+        }
+
+        /* Ambient dark background gradients & noise */
+        .ambient-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background: 
+                radial-gradient(circle at 85% 45%, rgba(65, 75, 95, 0.16) 0%, transparent 55%),
+                radial-gradient(circle at 18% 70%, rgba(35, 35, 45, 0.25) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, #060606 0%, #020202 100%);
+        }
+
+        /* Subtle film grain */
+        .ambient-noise {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Background River Canvas: Drifting Ice Floes with Latin & Greek Quotes */
+        #river-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* Interactive Floating DOM Quotes ("Ход льда на реке") */
+        #ice-river-container {
+            position: fixed;
+            inset: 0;
+            z-index: 4;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .ice-floe {
+            position: absolute;
+            pointer-events: auto;
+            display: inline-flex;
+            flex-direction: column;
+            padding: 9px 18px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0 12px rgba(255, 255, 255, 0.015);
+            cursor: default;
+            white-space: nowrap;
+            transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+            will-change: transform, opacity;
+        }
+
+        .ice-floe:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 255, 255, 0.1);
+            z-index: 50 !important;
+        }
+
+        .ice-text-original {
+            font-family: var(--font-quote);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            color: rgba(255, 255, 255, 0.65);
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .ice-floe:hover .ice-text-original {
+            color: #ffffff;
+            text-shadow: 0 0 14px rgba(255, 255, 255, 0.6);
+        }
+
+        .ice-text-translation {
+            font-family: var(--font-ui);
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.35);
+            letter-spacing: 0.04em;
+            margin-top: 2px;
+            transition: color 0.3s ease;
+        }
+
+        .ice-floe:hover .ice-text-translation {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* Main Viewport Container */
+        .hero-container {
+            position: relative;
+            z-index: 15;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 8vw;
+            pointer-events: none;
+        }
+
+        /* Left Content Column */
+        .hero-content {
+            position: relative;
+            z-index: 25;
+            max-width: 820px;
+            pointer-events: auto;
+        }
+
+        /* Top Tag / Category */
+        .category-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 18px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 26px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+        }
+
+        .category-indicator {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 10px #ffffff;
+            animation: pulseDot 2s infinite ease-in-out;
+        }
+
+        .category-text {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        /* Main Modern Typography: ЛЕНДИНГИ */
+        .title-primary {
+            font-family: var(--font-display);
+            font-size: clamp(3.2rem, 7.5vw, 7.2rem);
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: -0.035em;
+            text-transform: uppercase;
+            color: #ffffff;
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+            text-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+            position: relative;
+            display: block;
+        }
+
+        /* Second indented line: САЙТ ПОД КЛЮЧ */
+        .title-secondary-wrap {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-left: clamp(2.2rem, 5vw, 5.5rem);
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+        }
+
+        .title-indent-line {
+            width: clamp(30px, 4vw, 55px);
+            height: 3px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.95), transparent);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .title-secondary {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4.2vw, 4rem);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.025em;
+            text-transform: uppercase;
+            color: #e5e5ea;
+            background: linear-gradient(135deg, #ffffff 30%, #999999 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Subtitle / Description */
+        .hero-desc {
+            font-family: var(--font-ui);
+            font-size: clamp(14px, 1.1vw, 16px);
+            font-weight: 400;
+            color: var(--text-dim);
+            line-height: 1.65;
+            max-width: 500px;
+            margin-bottom: 34px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+        }
+
+        /* Divider */
+        .divider {
+            width: 100%;
+            max-width: 440px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.03) 85%, transparent);
+            margin-bottom: 26px;
+            opacity: 0;
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: expandLine 1s cubic-bezier(0.16, 1, 0.3, 1) 1.05s forwards;
+        }
+
+        /* Bottom Section: Telegram Info */
+        .contacts-card {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            opacity: 0;
+            transform: translateY(25px);
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1.15s forwards;
+        }
+
+        .tg-link-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            width: fit-content;
+            padding: 8px 18px 8px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tg-link-row::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(42, 171, 238, 0.22) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .tg-link-row:hover {
+            background: rgba(42, 171, 238, 0.08);
+            border-color: rgba(42, 171, 238, 0.45);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px var(--tg-glow);
+        }
+
+        .tg-link-row:hover::before {
+            opacity: 1;
+        }
+
+        .tg-icon-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #2AABEE;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(42, 171, 238, 0.4);
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .tg-link-row:hover .tg-icon-circle {
+            transform: rotate(-10deg) scale(1.08);
+        }
+
+        .tg-icon-svg {
+            width: 20px;
+            height: 20px;
+            fill: #ffffff;
+            margin-right: 2px;
+        }
+
+        .tg-handle {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        .tg-link-row:hover .tg-handle {
+            color: #2AABEE;
+        }
+
+        .tg-arrow {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-left: 2px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .tg-link-row:hover .tg-arrow {
+            color: #ffffff;
+            transform: translate(3px, -3px);
+        }
+
+        /* Status & Availability Note */
+        .tg-subtext-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 4px;
+            padding-left: 12px;
+        }
+
+        .status-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+            animation: pulseStatus 2.2s infinite ease-in-out;
+            flex-shrink: 0;
+        }
+
+        .tg-subtext {
+            font-family: var(--font-ui);
+            font-size: 13px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.55);
+            letter-spacing: 0.02em;
+        }
+
+        /* -------------------------------------------------------------
+           RIGHT SIDE: ANTIQUE STATUE (SEPARATE ENTRANCE & FLOATING WRAPPERS)
+        ------------------------------------------------------------- */
+        .statue-wrapper {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            height: 98vh;
+            width: 50vw;
+            max-width: 900px;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            overflow: visible;
+            /* Entrance Animation: Slides in from the right */
+            opacity: 0;
+            transform: translateX(180px);
+            animation: statueEntrance 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+            will-change: transform, opacity;
+        }
+
+        .statue-float-wrap {
+            height: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            animation: statueFloat 8s ease-in-out infinite alternate;
+            animation-delay: 2s;
+        }
+
+        .statue-img {
+            height: 100%;
+            width: auto;
+            max-height: 98vh;
+            object-fit: contain;
+            object-position: bottom right;
+            filter: contrast(118%) brightness(96%) grayscale(100%) drop-shadow(0 20px 60px rgba(0, 0, 0, 0.95));
+            user-select: none;
+            -webkit-user-drag: none;
+            /* Smooth mask at the very bottom pedestal to dissolve into the floor */
+            -webkit-mask-image: linear-gradient(to top, transparent 0%, black 14%);
+            mask-image: linear-gradient(to top, transparent 0%, black 14%);
+        }
+
+        /* Audio / Ambient Toggle Button */
+        .audio-toggle-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 30px;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            color: rgba(255, 255, 255, 0.5);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-family: var(--font-ui);
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .audio-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Custom smooth cursor follower */
+        .cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ffffff;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: border-color 0.2s;
+        }
+
+        /* Keyframe Animations */
+        @keyframes statueEntrance {
+            0% {
+                opacity: 0;
+                transform: translateX(180px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes statueFloat {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-15px) rotate(-0.7deg);
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(35px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes expandLine {
+            0% {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+
+        @keyframes pulseDot {
+            0%, 100% {
+                opacity: 0.6;
+                transform: scale(0.9);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.15);
+            }
+        }
+
+        @keyframes pulseStatus {
+            0%, 100% {
+                opacity: 0.5;
+                box-shadow: 0 0 4px #10b981;
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 14px #10b981;
+            }
+        }
+
+        /* Mobile & Tablet Responsive */
+        @media (max-width: 1024px) {
+            .statue-wrapper {
+                width: 60vw;
+                opacity: 0.75;
+                right: -8vw;
+            }
+            .hero-container {
+                padding: 0 6vw;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto;
+            }
+            .hero-container {
+                padding: 60px 24px;
+                height: auto;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+            }
+            .statue-wrapper {
+                position: absolute;
+                top: 5vh;
+                right: -25vw;
+                width: 85vw;
+                height: 65vh;
+                opacity: 0.45;
+                filter: contrast(130%) brightness(80%);
+            }
+            .title-secondary-wrap {
+                margin-left: 1rem;
+                gap: 12px;
+            }
+            .audio-toggle-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Glow & Gradients -->
+    <div class="ambient-layer"></div>
+    <div class="ambient-noise"></div>
+
+    <!-- Background River Canvas (Flow lines & Ice dust) -->
+    <canvas id="river-canvas"></canvas>
+
+    <!-- Drifting Latin & Greek Ice Floes ("Ход льда на реке") -->
+    <div id="ice-river-container"></div>
+
+    <!-- Main Content -->
+    <main class="hero-container">
+        <div class="hero-content">
+            
+            <!-- Category / Sub-badge -->
+            <div class="category-pill">
+                <span class="category-indicator"></span>
+                <span class="category-text">САЙТЫ-ВИЗИТКИ &bull; ВЕБ-ДИЗАЙН</span>
+            </div>
+
+            <!-- Title Line 1: ЛЕНДИНГИ -->
+            <h1 class="title-primary">ЛЕНДИНГИ</h1>
+
+            <!-- Title Line 2 Indented: САЙТ ПОД КЛЮЧ -->
+            <div class="title-secondary-wrap">
+                <div class="title-indent-line"></div>
+                <h2 class="title-secondary">САЙТ ПОД КЛЮЧ</h2>
+            </div>
+
+            <!-- Description / Subtext -->
+            <p class="hero-desc">
+                Разработка продающих лендингов с авторской эстетикой, чистым кодом и современными анимациями для вашего бизнеса.
+            </p>
+
+            <!-- Minimalist Divider -->
+            <div class="divider"></div>
+
+            <!-- Bottom Contacts Card -->
+            <div class="contacts-card">
+                <a href="https://t.me/mar_meladkas" target="_blank" rel="noopener noreferrer" class="tg-link-row" id="tgLink">
+                    <div class="tg-icon-circle">
+                        <svg class="tg-icon-svg" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.99 1.27-5.63 3.73-.53.37-1.02.55-1.45.54-.48-.01-1.4-.27-2.09-.49-.84-.27-1.51-.42-1.45-.89.03-.25.38-.51 1.07-.78 4.19-1.82 6.99-3.03 8.4-3.61 4-.1.67 1.83.67 2.05z"/>
+                        </svg>
+                    </div>
+                    <span class="tg-handle">@mar_meladkas</span>
+                    <span class="tg-arrow">&#8599;</span>
+                </a>
+
+                <div class="tg-subtext-wrap">
+                    <span class="status-pulse" title="На связи"></span>
+                    <span class="tg-subtext">пишите, отвечаю по возможности</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Right Side: Antique Classical Statue -->
+    <div class="statue-wrapper" id="statueWrapper">
+        <div class="statue-float-wrap">
+            <img src="statue.png" alt="Античная скульптура" class="statue-img" id="statueImg" loading="eager">
+        </div>
+    </div>
+
+    <!-- Audio / Ambient Toggle Button -->
+    <button class="audio-toggle-btn" id="audioBtn" title="Включить атмосферный звук реки">
+        <span id="audioIcon">&#9654;</span>
+        <span id="audioText">Атмосфера реки</span>
+    </button>
+
+    <!-- Custom Cursor Follower -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-trail" id="cursorTrail"></div>
+
+    <script>
+        /* -------------------------------------------------------------
+           1. ANCIENT GREEK & LATIN QUOTES ("ХОД ЛЬДА НА РЕКЕ")
+        ------------------------------------------------------------- */
+        const quotesData = [
+            { orig: "Πάντα ῥεῖ καὶ οὐδὲν μένει", trans: "Всё течет, всё меняется", author: "Гераклит" },
+            { orig: "Per aspera ad astra", trans: "Через тернии к звёздам", author: "Сенека" },
+            { orig: "Γνῶθι σεαυτόν", trans: "Познай самого себя", author: "Сократ" },
+            { orig: "Cogito, ergo sum", trans: "Я мыслю, следовательно, существую", author: "Декарт" },
+            { orig: "Ars longa, vita brevis", trans: "Жизнь коротка, искусство вечно", author: "Гиппократ" },
+            { orig: "Audentes fortuna iuvat", trans: "Смелым помогает судьба", author: "Вергилий" },
+            { orig: "Χαлеπὰ τὰ καλά", trans: "Прекрасное трудно", author: "Платон" },
+            { orig: "Carpe diem", trans: "Лови момент", author: "Гораций" },
+            { orig: "Amor fati", trans: "Люби свою судьбу", author: "Марк Аврелий" },
+            { orig: "Veni, vidi, vici", trans: "Пришел, увидел, победил", author: "Юлий Цезарь" },
+            { orig: "Sapere aude", trans: "Дерзай мыслить", author: "Гораций" },
+            { orig: "De nihilo nihil", trans: "Из ничего ничего не бывает", author: "Лукреций" },
+            { orig: "Acta non verba", trans: "Дела вместо слов", author: "Античный девиз" },
+            { orig: "Tempus fugit", trans: "Время неумолимо бежит", author: "Вергилий" },
+            { orig: "Omnia mea mecum porto", trans: "Всё своё ношу с собой", author: "Биант" }
+        ];
+
+        const container = document.getElementById('ice-river-container');
+        const floes = [];
+        const NUM_FLOES = 14;
+
+        class IceFloe {
+            constructor(quote, index) {
+                this.quote = quote;
+                this.el = document.createElement('div');
+                this.el.className = 'ice-floe';
+                
+                this.el.innerHTML = `
+                    <span class="ice-text-original">${quote.orig}</span>
+                    <span class="ice-text-translation">${quote.trans} &bull; ${quote.author}</span>
+                `;
+                container.appendChild(this.el);
+
+                // Depth layers: 0 (deep background), 1 (midground), 2 (foreground)
+                this.layer = index % 3;
+                
+                if (this.layer === 0) {
+                    this.scale = 0.65;
+                    this.baseOpacity = 0.18;
+                    this.speed = 0.35 + Math.random() * 0.25;
+                    this.el.style.filter = "blur(1.5px)";
+                } else if (this.layer === 1) {
+                    this.scale = 0.85;
+                    this.baseOpacity = 0.35;
+                    this.speed = 0.6 + Math.random() * 0.3;
+                    this.el.style.filter = "blur(0.5px)";
+                } else {
+                    this.scale = 1.0;
+                    this.baseOpacity = 0.55;
+                    this.speed = 0.9 + Math.random() * 0.4;
+                    this.el.style.filter = "none";
+                }
+
+                // Spread positions across and offscreen right
+                this.x = Math.random() * (window.innerWidth + 400);
+                const laneHeight = window.innerHeight / NUM_FLOES;
+                this.y = (index * laneHeight) + (Math.random() * 20 - 10);
+                
+                this.rotation = (Math.random() * 10 - 5);
+                this.rotSpeed = (Math.random() - 0.5) * 0.03;
+                
+                this.waveOffset = Math.random() * Math.PI * 2;
+                this.waveSpeed = 0.015 + Math.random() * 0.015;
+
+                this.isHovered = false;
+                this.el.addEventListener('mouseenter', () => { this.isHovered = true; });
+                this.el.addEventListener('mouseleave', () => { this.isHovered = false; });
+            }
+
+            update(time, mx, my) {
+                const currentSpeed = this.isHovered ? this.speed * 0.15 : this.speed;
+                this.x -= currentSpeed;
+                this.y += currentSpeed * 0.07;
+
+                const bobbing = Math.sin(time * this.waveSpeed + this.waveOffset) * (6 * this.scale);
+                this.rotation += this.rotSpeed;
+
+                // Mouse deflection
+                let repelX = 0, repelY = 0;
+                if (mx >= 0 && my >= 0) {
+                    const dx = this.x - mx;
+                    const dy = this.y - my;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const maxDist = 160;
+                    if (dist < maxDist) {
+                        const force = (1 - dist / maxDist) * 30;
+                        repelX = (dx / dist) * force;
+                        repelY = (dy / dist) * force;
+                    }
+                }
+
+                if (this.x < -450) {
+                    this.x = window.innerWidth + Math.random() * 300 + 100;
+                    this.y = Math.random() * (window.innerHeight - 80);
+                }
+                if (this.y > window.innerHeight + 100) {
+                    this.y = -50;
+                }
+
+                const renderX = this.x + repelX;
+                const renderY = this.y + bobbing + repelY;
+                const opacity = this.isHovered ? 1 : this.baseOpacity;
+                
+                this.el.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) scale(${this.scale}) rotate(${this.rotation}deg)`;
+                this.el.style.opacity = opacity;
+            }
+        }
+
+        // Initialize floes
+        for (let i = 0; i < NUM_FLOES; i++) {
+            floes.push(new IceFloe(quotesData[i % quotesData.length], i));
+        }
+
+        /* -------------------------------------------------------------
+           2. RIVER WATER CANVAS (Flow Particles & Ice Glints)
+        ------------------------------------------------------------- */
+        const canvas = document.getElementById('river-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const particles = [];
+        const NUM_PARTICLES = 40;
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                length: 15 + Math.random() * 35,
+                speed: 0.7 + Math.random() * 1.5,
+                opacity: 0.03 + Math.random() * 0.08,
+                width: 0.5 + Math.random() * 1.2
+            });
+        }
+
+        let mouseX = window.innerWidth * 0.4;
+        let mouseY = window.innerHeight * 0.5;
+        let smoothMouseX = mouseX;
+        let smoothMouseY = mouseY;
+        let mouseMoved = false;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            mouseMoved = true;
+
+            const tgLink = document.getElementById('tgLink');
+            const rect = tgLink.getBoundingClientRect();
+            const relX = ((e.clientX - rect.left) / rect.width) * 100;
+            const relY = ((e.clientY - rect.top) / rect.height) * 100;
+            tgLink.style.setProperty('--mouse-x', `${relX}%`);
+            tgLink.style.setProperty('--mouse-y', `${relY}%`);
+        });
+
+        /* -------------------------------------------------------------
+           3. STATUE MOUSE 3D PARALLAX
+        ------------------------------------------------------------- */
+        const statueWrapper = document.getElementById('statueWrapper');
+        let statueX = 0, statueY = 0;
+
+        function animateRiver(time) {
+            ctx.clearRect(0, 0, width, height);
+
+            // Water current lines
+            for (let p of particles) {
+                p.x -= p.speed;
+                p.y += p.speed * 0.07;
+
+                if (p.x < -100) {
+                    p.x = width + 50;
+                    p.y = Math.random() * height;
+                }
+
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p.x + p.length, p.y - p.length * 0.07);
+                ctx.strokeStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                ctx.lineWidth = p.width;
+                ctx.stroke();
+            }
+
+            // Update DOM Ice Floes
+            for (let floe of floes) {
+                floe.update(time * 0.05, mouseMoved ? mouseX : -1000, mouseMoved ? mouseY : -1000);
+            }
+
+            // Statue Parallax (applied gently on wrapper after entrance delay)
+            if (mouseMoved && time > 2000) {
+                const targetStatueX = (mouseX / width - 0.5) * -20;
+                const targetStatueY = (mouseY / height - 0.5) * -16;
+                statueX += (targetStatueX - statueX) * 0.05;
+                statueY += (targetStatueY - statueY) * 0.05;
+                statueWrapper.style.transform = `translate3d(${statueX}px, ${statueY}px, 0)`;
+            }
+
+            // Cursor trail
+            smoothMouseX += (mouseX - smoothMouseX) * 0.15;
+            smoothMouseY += (mouseY - smoothMouseY) * 0.15;
+            cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+            cursorTrail.style.transform = `translate(${smoothMouseX}px, ${smoothMouseY}px)`;
+
+            requestAnimationFrame(animateRiver);
+        }
+        requestAnimationFrame(animateRiver);
+
+        /* -------------------------------------------------------------
+           4. CUSTOM CURSOR
+        ------------------------------------------------------------- */
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorTrail = document.getElementById('cursorTrail');
+
+        document.querySelectorAll('a, button, .ice-floe').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorTrail.style.transform += ' scale(1.6)';
+                cursorTrail.style.borderColor = 'rgba(42, 171, 238, 0.6)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorTrail.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+            });
+        });
+
+        /* -------------------------------------------------------------
+           5. SYNTHESIZED ETHEREAL RIVER AUDIO (Web Audio API)
+        ------------------------------------------------------------- */
+        const audioBtn = document.getElementById('audioBtn');
+        const audioIcon = document.getElementById('audioIcon');
+        const audioText = document.getElementById('audioText');
+        let audioCtx = null;
+        let isAudioPlaying = false;
+        let noiseNode = null;
+        let filterNode = null;
+        let gainNode = null;
+
+        audioBtn.addEventListener('click', () => {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (!isAudioPlaying) {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const bufferSize = audioCtx.sampleRate * 2;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                let lastOut = 0.0;
+                for (let i = 0; i < bufferSize; i++) {
+                    const white = Math.random() * 2 - 1;
+                    data[i] = (lastOut + (0.02 * white)) / 1.02;
+                    lastOut = data[i];
+                    data[i] *= 3.5;
+                }
+
+                noiseNode = audioCtx.createBufferSource();
+                noiseNode.buffer = buffer;
+                noiseNode.loop = true;
+
+                filterNode = audioCtx.createBiquadFilter();
+                filterNode.type = 'lowpass';
+                filterNode.frequency.setValueAtTime(320, audioCtx.currentTime);
+
+                gainNode = audioCtx.createGain();
+                gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime + 1.5);
+
+                noiseNode.connect(filterNode);
+                filterNode.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                noiseNode.start();
+                isAudioPlaying = true;
+                audioIcon.innerHTML = "&#9632;";
+                audioText.innerText = "Звук включен";
+                audioBtn.style.color = "#2AABEE";
+                audioBtn.style.borderColor = "rgba(42, 171, 238, 0.4)";
+            } else {
+                if (gainNode) {
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
+                    setTimeout(() => {
+                        noiseNode.stop();
+                        noiseNode.disconnect();
+                        isAudioPlaying = false;
+                        audioIcon.innerHTML = "&#9654;";
+                        audioText.innerText = "Атмосфера реки";
+                        audioBtn.style.color = "rgba(255, 255, 255, 0.5)";
+                        audioBtn.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                    }, 800);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
